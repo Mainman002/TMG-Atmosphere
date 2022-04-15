@@ -390,7 +390,7 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
             camera_ob.data.passepartout_alpha = 0.98
 
             ## Camera Local Position Offset
-            bpy.ops.transform.translate(value=(1.86265e-09, 0, -3.11202), orient_axis_ortho='X', orient_type='LOCAL', orient_matrix=((0.999775, -0.0195371, -0.00822242), (0.0123994, 0.224424, 0.974413), (-0.0171919, -0.974296, 0.224616)), orient_matrix_type='LOCAL', constraint_axis=(False, False, True), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+            bpy.ops.transform.translate(value=(1.86265e-09, 0, -3.11202), orient_type='LOCAL', orient_matrix=((0.999867, -0.016311, 2.32831e-10), (0.00365587, 0.224105, 0.974558), (-0.0158961, -0.974429, 0.224135)), orient_matrix_type='LOCAL', constraint_axis=(False, False, True), use_proportional_edit=False)
 
         ## Add Suzanne
         if tmg_atmosphere_vars.suzanne:
