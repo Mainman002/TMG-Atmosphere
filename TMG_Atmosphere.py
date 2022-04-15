@@ -413,7 +413,14 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
             set_shader_value( material, "Principled BSDF", 1, 0.1 )
             set_shader_value( material, "Principled BSDF", 9, 0.55 )
             set_shader_value( material, "Principled BSDF", 16, 2.5 )
-            set_shader_value( material, "Principled BSDF", 17, 0.103734 )
+
+            if (2, 93, 6) < bpy.app.version:
+                print("3.0")
+                set_shader_value( material, "Principled BSDF", 17, 0.103734 )
+            else:
+                print("2.93")
+                set_shader_value( material, "Principled BSDF", 15, 0.103734 )
+
             link_shader_nodes(material, "Principled BSDF", "Material Output", 0, 0)
 
         ## Add Sun Light
