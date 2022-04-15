@@ -2,7 +2,7 @@
 A panel to manage atmosphere and lighting effects.
 
 ## Preview Images
-![image](https://user-images.githubusercontent.com/11281480/163524216-0cf0f366-913c-4dca-a0e5-5111c1420c96.png)
+![image](https://user-images.githubusercontent.com/11281480/163539113-4f4211dd-ec22-4be9-b470-e86d53572649.png)
 
 ![image](https://user-images.githubusercontent.com/11281480/163505930-b720de15-f4f1-43b9-9d09-5b4073e048b9.png)
 
