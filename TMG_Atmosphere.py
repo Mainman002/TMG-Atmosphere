@@ -5,39 +5,34 @@ from bpy.props import StringProperty, BoolProperty, EnumProperty, IntProperty, F
 from bpy.types import Operator, Header
 
 
-## Parent Circle
-## Focus Empty
-## Camera
-## Sun
-## Area Light #1
-## Area Light #2
-## Area Light #3
-## Ground Plane
-## Suzanne Head
-
-
 class TMG_Atmosphere_Properties(bpy.types.PropertyGroup):
-    test : bpy.props.FloatProperty(name='Diffuse Max', default=1.0, soft_min=0.0, soft_max=1.0)
-
+    atmosphere_enabled : bpy.props.BoolProperty(name='Atmosphere', default=True)
     atmosphere_color :  bpy.props.FloatVectorProperty(name="Color", size=4, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8, 1), min=0, max=1)
     atmosphere_density : bpy.props.FloatProperty(name='Density', default=0.01, soft_min=0.0, soft_max=1.0)
     atmosphere_absorption : bpy.props.FloatProperty(name='Absorption', default=0.0, soft_min=0.0, soft_max=1.0)
 
+    sun_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
+    sun_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     sun_energy : bpy.props.FloatProperty(name='Sun Energy', default=4.0, soft_min=0.0, soft_max=10.0)
+
+    area1_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
+    area1_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     area1_energy : bpy.props.FloatProperty(name='Area1 Energy', default=100.0, soft_min=0.0, soft_max=100.0)
+
+    area2_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
+    area2_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     area2_energy : bpy.props.FloatProperty(name='Area2 Energy', default=70.0, soft_min=0.0, soft_max=100.0)
+
+    area3_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
+    area3_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     area3_energy : bpy.props.FloatProperty(name='Area3 Energy', default=50.0, soft_min=0.0, soft_max=100.0)
 
     control_circle : bpy.props.BoolProperty(name='Control Circle', default=True)
     focus : bpy.props.BoolProperty(name='Focus', default=True)
     effects_world : bpy.props.BoolProperty(name='World', default=True)
-    sun : bpy.props.BoolProperty(name='Sun', default=True)
-    three_point : bpy.props.BoolProperty(name='3 Point', default=True)
-    atmosphere : bpy.props.BoolProperty(name='Atmosphere', default=True)
     camera : bpy.props.BoolProperty(name='Camera', default=True)
     floor : bpy.props.BoolProperty(name='Floor', default=True)
     suzanne : bpy.props.BoolProperty(name='Suzanne', default=False)
-    pass  
 
 
 def get_ob():
@@ -145,11 +140,7 @@ class TMG_Atmosphere_Panel_Properties(bpy.types.Panel):
     bl_region_type = 'UI'
         
     def draw(self, context):
-        scene = context.scene
-        tmg_atmosphere_vars = scene.tmg_atmosphere_vars
         layout = self.layout
-        layout.use_property_split = True
-        layout.use_property_decorate = False  # No animation.
         
 
 class TMG_Atmosphere_Panel_Properties_Objects(bpy.types.Panel):
@@ -174,9 +165,6 @@ class TMG_Atmosphere_Panel_Properties_Objects(bpy.types.Panel):
         col.prop(tmg_atmosphere_vars, 'control_circle')
         col.prop(tmg_atmosphere_vars, 'focus')
         col.prop(tmg_atmosphere_vars, 'camera')
-        col.prop(tmg_atmosphere_vars, 'sun')
-        col.prop(tmg_atmosphere_vars, 'three_point')
-        col.prop(tmg_atmosphere_vars, 'atmosphere')
         col.prop(tmg_atmosphere_vars, 'floor')
         col.prop(tmg_atmosphere_vars, 'suzanne')
 
@@ -196,14 +184,33 @@ class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
         layout.use_property_split = True
         layout.use_property_decorate = False  # No animation.
 
+        layout.prop(tmg_atmosphere_vars, 'sun_enabled', text='Sun')
         box = layout.box()
-        col = box.column(align=False)
-        # row = col.row(align=True)  
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'sun_color')
+        col.prop(tmg_atmosphere_vars, 'sun_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.sun_enabled
 
-        col.prop(tmg_atmosphere_vars, 'sun_energy')
-        col.prop(tmg_atmosphere_vars, 'area1_energy')
-        col.prop(tmg_atmosphere_vars, 'area2_energy')
-        col.prop(tmg_atmosphere_vars, 'area3_energy')
+        layout.prop(tmg_atmosphere_vars, 'area1_enabled', text='Area_1')
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area1_color')
+        col.prop(tmg_atmosphere_vars, 'area1_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.area1_enabled
+
+        layout.prop(tmg_atmosphere_vars, 'area2_enabled', text='Area_2')
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area2_color')
+        col.prop(tmg_atmosphere_vars, 'area2_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.area2_enabled
+
+        layout.prop(tmg_atmosphere_vars, 'area3_enabled', text='Area_3')
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area3_color')
+        col.prop(tmg_atmosphere_vars, 'area3_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.area3_enabled
 
 
 class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
@@ -221,13 +228,13 @@ class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
         layout.use_property_split = True
         layout.use_property_decorate = False  # No animation.
 
+        layout.prop(tmg_atmosphere_vars, 'atmosphere_enabled', text='Atmosphere')
         box = layout.box()
         col = box.column(align=False)
-        # row = col.row(align=True)  
-
         col.prop(tmg_atmosphere_vars, 'atmosphere_color')
         col.prop(tmg_atmosphere_vars, 'atmosphere_density')
         col.prop(tmg_atmosphere_vars, 'atmosphere_absorption')
+        col.enabled = tmg_atmosphere_vars.atmosphere_enabled
 
         
 class TMG_Atmosphere_Add(bpy.types.Operator):
@@ -249,7 +256,7 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
         ob = NULL
 
         ## Add Atmosphere Cube
-        if tmg_atmosphere_vars.atmosphere:
+        if tmg_atmosphere_vars.atmosphere_enabled:
             bpy.ops.mesh.primitive_cube_add(size=32, enter_editmode=False, align='WORLD', location=(0, 0, 8), scale=(2, 2, 1))
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
             ob = get_ob()
@@ -294,7 +301,7 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
 
         ## Add Camera
         if tmg_atmosphere_vars.camera:
-            bpy.ops.object.camera_add(enter_editmode=False, align='VIEW', location=(-0.1, -2.13, 1.71), rotation=(1.34424, 0.00822251, -0.019539), scale=(1, 1, 1))
+            bpy.ops.object.camera_add(enter_editmode=False, align='WORLD', location=(-0.1, -2.13, 1.71), rotation=(1.34424, 0.00822251, -0.019539), scale=(1, 1, 1))
             camera_ob = get_ob()
             bpy.context.scene.camera = camera_ob
 
@@ -359,16 +366,18 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
             link_shader_nodes(material, "Principled BSDF", "Material Output", 0, 0)
 
         ## Add Sun Light
-        if tmg_atmosphere_vars.sun:
+        if tmg_atmosphere_vars.sun_enabled:
             bpy.ops.object.light_add(type='SUN', radius=1, align='WORLD', location=(0, 0, 10), rotation=(0, 0.436332, -0.785398), scale=(1, 1, 1))
             if control_circle:
                 get_ob().parent = control_circle
+            bpy.context.object.data.color = tmg_atmosphere_vars.sun_color
             bpy.context.object.data.energy = tmg_atmosphere_vars.sun_energy
 
-        ## Add Area Light
-        if tmg_atmosphere_vars.three_point:
-            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(1, -1, 3), scale=(1, 1, 1))
-            bpy.context.object.data.energy = bpy.context.object.data.energy = tmg_atmosphere_vars.area1_energy
+        ## Add Area Light_1
+        if tmg_atmosphere_vars.area1_enabled:
+            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(1, -1, 2.5), scale=(1, 1, 1))
+            bpy.context.object.data.color = tmg_atmosphere_vars.area1_color
+            bpy.context.object.data.energy = tmg_atmosphere_vars.area1_energy
             bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.use_contact_shadow = True
 
@@ -379,12 +388,35 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
             if control_circle:
                 get_ob().parent = control_circle
 
-            ## Create Area Duplicates
-            bpy.ops.object.duplicate_move(OBJECT_OT_duplicate={"linked":False, "mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(-6, 6, 0), "orient_axis_ortho":'X', "orient_type":'GLOBAL', "orient_matrix":((1, 0, 0), (0, 1, 0), (0, 0, 1)), "orient_matrix_type":'GLOBAL', "constraint_axis":(True, True, False), "mirror":False, "use_proportional_edit":False, "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "use_proportional_connected":False, "use_proportional_projected":False, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "view2d_edge_pan":False, "release_confirm":False, "use_accurate":False, "use_automerge_and_split":False})
-            bpy.context.object.data.energy = bpy.context.object.data.energy = tmg_atmosphere_vars.area2_energy
+        ## Add Area Light_2
+        if tmg_atmosphere_vars.area2_enabled:
+            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(-5, 5.7, 2.5), scale=(1, 1, 1))
+            bpy.context.object.data.color = tmg_atmosphere_vars.area2_color
+            bpy.context.object.data.energy = tmg_atmosphere_vars.area2_energy
+            bpy.context.object.data.shape = 'DISK'
+            bpy.context.object.data.use_contact_shadow = True
 
-            bpy.ops.object.duplicate_move(OBJECT_OT_duplicate={"linked":False, "mode":'TRANSLATION'}, TRANSFORM_OT_translate={"value":(9, 1, 0), "orient_axis_ortho":'X', "orient_type":'GLOBAL', "orient_matrix":((1, 0, 0), (0, 1, 0), (0, 0, 1)), "orient_matrix_type":'GLOBAL', "constraint_axis":(True, True, False), "mirror":False, "use_proportional_edit":False, "proportional_edit_falloff":'SMOOTH', "proportional_size":1, "use_proportional_connected":False, "use_proportional_projected":False, "snap":False, "snap_target":'CLOSEST', "snap_point":(0, 0, 0), "snap_align":False, "snap_normal":(0, 0, 0), "gpencil_strokes":False, "cursor_transform":False, "texture_space":False, "remove_on_cancel":False, "view2d_edge_pan":False, "release_confirm":False, "use_accurate":False, "use_automerge_and_split":False})
-            bpy.context.object.data.energy = bpy.context.object.data.energy = tmg_atmosphere_vars.area3_energy
+            if focus_empty:
+                bpy.ops.object.constraint_add(type='TRACK_TO')
+                bpy.context.object.constraints["Track To"].target = focus_empty
+
+            if control_circle:
+                get_ob().parent = control_circle
+
+        ## Add Area Light_3
+        if tmg_atmosphere_vars.area3_enabled:
+            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(4, 8, 2.5), scale=(1, 1, 1))
+            bpy.context.object.data.color = tmg_atmosphere_vars.area3_color
+            bpy.context.object.data.energy = tmg_atmosphere_vars.area3_energy
+            bpy.context.object.data.shape = 'DISK'
+            bpy.context.object.data.use_contact_shadow = True
+
+            if focus_empty:
+                bpy.ops.object.constraint_add(type='TRACK_TO')
+                bpy.context.object.constraints["Track To"].target = focus_empty
+
+            if control_circle:
+                get_ob().parent = control_circle
 
         ## Set World Strength
         if tmg_atmosphere_vars.effects_world:
