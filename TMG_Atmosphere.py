@@ -18,21 +18,41 @@ class TMG_Atmosphere_Properties(bpy.types.PropertyGroup):
     area1_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
     area1_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     area1_energy : bpy.props.FloatProperty(name='Area1 Energy', default=100.0, soft_min=0.0, soft_max=100.0)
+    area1_type : bpy.props.EnumProperty(name='Type', default='AREA', description='Light type',
+    items=[
+    ('NONE', 'None', ''),
+    ('AREA', 'Area', ''),
+    ('SPOT', 'Spot', ''),
+    ('POINT', 'Point', ''),
+    ('SUN', 'Sun', '')])
 
     area2_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
     area2_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     area2_energy : bpy.props.FloatProperty(name='Area2 Energy', default=70.0, soft_min=0.0, soft_max=100.0)
+    area2_type : bpy.props.EnumProperty(name='Type', default='AREA', description='Light type',
+    items=[
+    ('NONE', 'None', ''),
+    ('AREA', 'Area', ''),
+    ('SPOT', 'Spot', ''),
+    ('POINT', 'Point', ''),
+    ('SUN', 'Sun', '')])
 
     area3_enabled : bpy.props.BoolProperty(name='Enabled', default=True)
     area3_color :  bpy.props.FloatVectorProperty(name="Color", size=3, subtype='COLOR_GAMMA', default=(0.8, 0.8, 0.8), min=0, max=1)
     area3_energy : bpy.props.FloatProperty(name='Area3 Energy', default=50.0, soft_min=0.0, soft_max=100.0)
+    area3_type : bpy.props.EnumProperty(name='Type', default='AREA', description='Light type',
+    items=[
+    ('NONE', 'None', ''),
+    ('AREA', 'Area', ''),
+    ('SPOT', 'Spot', ''),
+    ('POINT', 'Point', ''),
+    ('SUN', 'Sun', '')])
 
     control_circle : bpy.props.BoolProperty(name='Control Circle', default=True)
     focus : bpy.props.BoolProperty(name='Focus', default=True)
-    effects_world : bpy.props.BoolProperty(name='World', default=True)
     camera : bpy.props.BoolProperty(name='Camera', default=True)
     floor : bpy.props.BoolProperty(name='Floor', default=True)
-    suzanne : bpy.props.BoolProperty(name='Suzanne', default=False)
+    suzanne : bpy.props.BoolProperty(name='Suzanne', default=True)
 
 
 def get_ob():
@@ -128,7 +148,8 @@ class TMG_Atmosphere_Panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        layout.operator("tmg_atmosphere.add")
+        layout.operator("tmg_atmosphere.add", icon='SCENE_DATA')
+        layout.operator("tmg_atmosphere.set_scene_settings", icon='SCENE')
 
             
 class TMG_Atmosphere_Panel_Properties(bpy.types.Panel):
@@ -194,6 +215,7 @@ class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
         layout.prop(tmg_atmosphere_vars, 'area1_enabled', text='Area_1')
         box = layout.box()
         col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area1_type')
         col.prop(tmg_atmosphere_vars, 'area1_color')
         col.prop(tmg_atmosphere_vars, 'area1_energy', text='Energy')
         col.enabled = tmg_atmosphere_vars.area1_enabled
@@ -201,6 +223,7 @@ class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
         layout.prop(tmg_atmosphere_vars, 'area2_enabled', text='Area_2')
         box = layout.box()
         col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area2_type')
         col.prop(tmg_atmosphere_vars, 'area2_color')
         col.prop(tmg_atmosphere_vars, 'area2_energy', text='Energy')
         col.enabled = tmg_atmosphere_vars.area2_enabled
@@ -208,6 +231,7 @@ class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
         layout.prop(tmg_atmosphere_vars, 'area3_enabled', text='Area_3')
         box = layout.box()
         col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area3_type')
         col.prop(tmg_atmosphere_vars, 'area3_color')
         col.prop(tmg_atmosphere_vars, 'area3_energy', text='Energy')
         col.enabled = tmg_atmosphere_vars.area3_enabled
@@ -235,6 +259,49 @@ class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
         col.prop(tmg_atmosphere_vars, 'atmosphere_density')
         col.prop(tmg_atmosphere_vars, 'atmosphere_absorption')
         col.enabled = tmg_atmosphere_vars.atmosphere_enabled
+
+
+class TMG_Atmosphere_Panel_Properties_Effects_View_Settings(bpy.types.Panel):
+    bl_idname = "tmg_atmosphere_panel_properties_effects_view_settings"
+    bl_label = "View Settings"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_options = {"DEFAULT_CLOSED"}
+        
+    def draw(self, context):
+        scene = context.scene
+        tmg_atmosphere_vars = scene.tmg_atmosphere_vars
+        layout = self.layout
+        layout.use_property_split = True
+        layout.use_property_decorate = False  # No animation.
+
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(scene.view_settings, 'view_transform')
+        col.prop(scene.view_settings, 'look')
+
+
+class TMG_Atmosphere_Panel_Properties_Effects_World(bpy.types.Panel):
+    bl_idname = "tmg_atmosphere_panel_properties_effects_world"
+    bl_label = "World"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_options = {"DEFAULT_CLOSED"}
+        
+    def draw(self, context):
+        scene = context.scene
+        tmg_atmosphere_vars = scene.tmg_atmosphere_vars
+        layout = self.layout
+        layout.use_property_split = True
+        layout.use_property_decorate = False  # No animation.
+
+        box = layout.box()
+        col = box.column(align=True)
+        if scene.world:
+            col.prop(scene.world.node_tree.nodes["Background"].inputs[0], 'default_value', text="Color")
+            col.prop(scene.world.node_tree.nodes["Background"].inputs[1], 'default_value', text='Energy')
 
         
 class TMG_Atmosphere_Add(bpy.types.Operator):
@@ -303,7 +370,7 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
         if tmg_atmosphere_vars.camera:
             bpy.ops.object.camera_add(enter_editmode=False, align='WORLD', location=(-0.1, -2.13, 1.71), rotation=(1.34424, 0.00822251, -0.019539), scale=(1, 1, 1))
             camera_ob = get_ob()
-            bpy.context.scene.camera = camera_ob
+            scene.camera = camera_ob
 
             if control_circle:
                 camera_ob.parent = control_circle
@@ -315,28 +382,12 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
                 
             ## Camera View Settings
             camera_ob.data.dof.use_dof = True
+            camera_ob.data.dof.aperture_blades = 8
             camera_ob.data.lens = 61.87
             camera_ob.data.sensor_width = 50
             camera_ob.data.clip_start = 0.1
             camera_ob.data.clip_end = 1000
             camera_ob.data.passepartout_alpha = 0.98
-
-            ## DOF Blur Effect
-            bpy.context.scene.eevee.use_bokeh_high_quality_slight_defocus = True
-            bpy.context.scene.eevee.use_bokeh_jittered = True
-            bpy.context.object.data.dof.aperture_blades = 8
-
-            ## ScreenSpace Effect
-            bpy.context.scene.eevee.use_ssr_refraction = True
-            bpy.context.scene.eevee.use_ssr_halfres = True
-            bpy.context.scene.eevee.use_ssr = True
-
-            ## AO Effect
-            bpy.context.scene.eevee.use_gtao = True
-
-            ## Bloom Effect
-            bpy.context.scene.eevee.use_bloom = True
-
 
             ## Camera Local Position Offset
             bpy.ops.transform.translate(value=(1.86265e-09, 0, -3.11202), orient_axis_ortho='X', orient_type='LOCAL', orient_matrix=((0.999775, -0.0195371, -0.00822242), (0.0123994, 0.224424, 0.974413), (-0.0171919, -0.974296, 0.224616)), orient_matrix_type='LOCAL', constraint_axis=(False, False, True), mirror=False, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
@@ -374,11 +425,13 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
             bpy.context.object.data.energy = tmg_atmosphere_vars.sun_energy
 
         ## Add Area Light_1
-        if tmg_atmosphere_vars.area1_enabled:
-            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(1, -1, 2.5), scale=(1, 1, 1))
+        if tmg_atmosphere_vars.area1_enabled and not tmg_atmosphere_vars.area1_type == 'NONE':
+            light_type = tmg_atmosphere_vars.area1_type
+            bpy.ops.object.light_add(type=light_type, radius=3, align='WORLD', location=(1, -1, 2.5), scale=(1, 1, 1))
+            if light_type == "AREA":
+                bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.color = tmg_atmosphere_vars.area1_color
             bpy.context.object.data.energy = tmg_atmosphere_vars.area1_energy
-            bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.use_contact_shadow = True
 
             if focus_empty:
@@ -389,11 +442,13 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
                 get_ob().parent = control_circle
 
         ## Add Area Light_2
-        if tmg_atmosphere_vars.area2_enabled:
-            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(-5, 5.7, 2.5), scale=(1, 1, 1))
+        if tmg_atmosphere_vars.area2_enabled and not tmg_atmosphere_vars.area2_type == 'NONE':
+            light_type = tmg_atmosphere_vars.area2_type
+            bpy.ops.object.light_add(type=light_type, radius=3, align='WORLD', location=(-5, 5.7, 2.5), scale=(1, 1, 1))
+            if light_type == "AREA":
+                bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.color = tmg_atmosphere_vars.area2_color
             bpy.context.object.data.energy = tmg_atmosphere_vars.area2_energy
-            bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.use_contact_shadow = True
 
             if focus_empty:
@@ -404,11 +459,13 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
                 get_ob().parent = control_circle
 
         ## Add Area Light_3
-        if tmg_atmosphere_vars.area3_enabled:
-            bpy.ops.object.light_add(type='AREA', radius=3, align='WORLD', location=(4, 8, 2.5), scale=(1, 1, 1))
+        if tmg_atmosphere_vars.area3_enabled and not tmg_atmosphere_vars.area3_type == 'NONE':
+            light_type = tmg_atmosphere_vars.area3_type
+            bpy.ops.object.light_add(type=light_type, radius=3, align='WORLD', location=(4, 8, 2.5), scale=(1, 1, 1))
+            if light_type == "AREA":
+                bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.color = tmg_atmosphere_vars.area3_color
             bpy.context.object.data.energy = tmg_atmosphere_vars.area3_energy
-            bpy.context.object.data.shape = 'DISK'
             bpy.context.object.data.use_contact_shadow = True
 
             if focus_empty:
@@ -417,15 +474,50 @@ class TMG_Atmosphere_Add(bpy.types.Operator):
 
             if control_circle:
                 get_ob().parent = control_circle
-
-        ## Set World Strength
-        if tmg_atmosphere_vars.effects_world:
-            if bpy.data.worlds.get( "World" ):
-                bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[1].default_value = 0.1
-
         return {'FINISHED'}
 
 
+class TMG_Atmosphere_Set_Scene_Settings(bpy.types.Operator):
+    """Change blender scene rendering settings"""
 
+    bl_idname = "tmg_atmosphere.set_scene_settings"
+    bl_label = "Set Render Settings"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        scene = context.scene
+        tmg_atmosphere_vars = scene.tmg_atmosphere_vars
+
+        ## Empty object properties
+        control_circle = NULL
+        focus_empty = NULL
+        camera_ob = NULL
+        suzanne = NULL
+        ob = NULL
+
+        ## View Look
+        scene.view_settings.look = 'Medium High Contrast'
+
+        ## DOF Blur Effect
+        scene.eevee.use_bokeh_high_quality_slight_defocus = True
+        scene.eevee.use_bokeh_jittered = True
+
+        ## ScreenSpace Effect
+        scene.eevee.use_ssr_refraction = True
+        scene.eevee.use_ssr_halfres = True
+        scene.eevee.use_ssr = True
+
+        ## AO Effect
+        scene.eevee.use_gtao = True
+
+        ## Bloom Effect
+        scene.eevee.use_bloom = True
+
+        ## Set World Strength
+        if scene.world:
+            scene.world.node_tree.nodes["Background"].inputs[0].default_value = (0.8, 0.8, 0.8, 1)
+            scene.world.node_tree.nodes["Background"].inputs[1].default_value = 0.1
+
+        return {'FINISHED'}
 
 
