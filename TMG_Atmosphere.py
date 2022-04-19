@@ -206,35 +206,39 @@ class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
         layout.use_property_decorate = False  # No animation.
 
         layout.prop(tmg_atmosphere_vars, 'sun_enabled', text='Sun')
-        box = layout.box()
-        col = box.column(align=True)
-        col.prop(tmg_atmosphere_vars, 'sun_color')
-        col.prop(tmg_atmosphere_vars, 'sun_energy', text='Energy')
-        col.enabled = tmg_atmosphere_vars.sun_enabled
+        if scene.tmg_atmosphere_vars.sun_enabled:
+            box = layout.box()
+            col = box.column(align=True)
+            col.prop(tmg_atmosphere_vars, 'sun_color')
+            col.prop(tmg_atmosphere_vars, 'sun_energy', text='Energy')
+            col.enabled = tmg_atmosphere_vars.sun_enabled
 
         layout.prop(tmg_atmosphere_vars, 'area1_enabled', text='Area_1')
-        box = layout.box()
-        col = box.column(align=True)
-        col.prop(tmg_atmosphere_vars, 'area1_type')
-        col.prop(tmg_atmosphere_vars, 'area1_color')
-        col.prop(tmg_atmosphere_vars, 'area1_energy', text='Energy')
-        col.enabled = tmg_atmosphere_vars.area1_enabled
+        if scene.tmg_atmosphere_vars.area1_enabled:
+            box = layout.box()
+            col = box.column(align=True)
+            col.prop(tmg_atmosphere_vars, 'area1_type')
+            col.prop(tmg_atmosphere_vars, 'area1_color')
+            col.prop(tmg_atmosphere_vars, 'area1_energy', text='Energy')
+            col.enabled = tmg_atmosphere_vars.area1_enabled
 
         layout.prop(tmg_atmosphere_vars, 'area2_enabled', text='Area_2')
-        box = layout.box()
-        col = box.column(align=True)
-        col.prop(tmg_atmosphere_vars, 'area2_type')
-        col.prop(tmg_atmosphere_vars, 'area2_color')
-        col.prop(tmg_atmosphere_vars, 'area2_energy', text='Energy')
-        col.enabled = tmg_atmosphere_vars.area2_enabled
+        if scene.tmg_atmosphere_vars.area2_enabled:
+            box = layout.box()
+            col = box.column(align=True)
+            col.prop(tmg_atmosphere_vars, 'area2_type')
+            col.prop(tmg_atmosphere_vars, 'area2_color')
+            col.prop(tmg_atmosphere_vars, 'area2_energy', text='Energy')
+            col.enabled = tmg_atmosphere_vars.area2_enabled
 
         layout.prop(tmg_atmosphere_vars, 'area3_enabled', text='Area_3')
-        box = layout.box()
-        col = box.column(align=True)
-        col.prop(tmg_atmosphere_vars, 'area3_type')
-        col.prop(tmg_atmosphere_vars, 'area3_color')
-        col.prop(tmg_atmosphere_vars, 'area3_energy', text='Energy')
-        col.enabled = tmg_atmosphere_vars.area3_enabled
+        if scene.tmg_atmosphere_vars.area3_enabled:
+            box = layout.box()
+            col = box.column(align=True)
+            col.prop(tmg_atmosphere_vars, 'area3_type')
+            col.prop(tmg_atmosphere_vars, 'area3_color')
+            col.prop(tmg_atmosphere_vars, 'area3_energy', text='Energy')
+            col.enabled = tmg_atmosphere_vars.area3_enabled
 
 
 class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
@@ -253,12 +257,13 @@ class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
         layout.use_property_decorate = False  # No animation.
 
         layout.prop(tmg_atmosphere_vars, 'atmosphere_enabled', text='Atmosphere')
-        box = layout.box()
-        col = box.column(align=False)
-        col.prop(tmg_atmosphere_vars, 'atmosphere_color')
-        col.prop(tmg_atmosphere_vars, 'atmosphere_density')
-        col.prop(tmg_atmosphere_vars, 'atmosphere_absorption')
-        col.enabled = tmg_atmosphere_vars.atmosphere_enabled
+        if scene.tmg_atmosphere_vars.atmosphere_enabled:
+            box = layout.box()
+            col = box.column(align=False)
+            col.prop(tmg_atmosphere_vars, 'atmosphere_color')
+            col.prop(tmg_atmosphere_vars, 'atmosphere_density')
+            col.prop(tmg_atmosphere_vars, 'atmosphere_absorption')
+            col.enabled = tmg_atmosphere_vars.atmosphere_enabled
 
 
 class TMG_Atmosphere_Panel_Properties_Effects_View_Settings(bpy.types.Panel):
