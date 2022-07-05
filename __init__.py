@@ -19,8 +19,8 @@ bl_info = {
     "author": "Johnathan Mueller",
     "descrtion": "A panel to manage atmosphere and lighting effects",
     "blender": (2, 80, 0),
-    "version": (0, 1, 0),
-    "location": "View3D (ObjectMode) > Sidebar > TMG_Atmosphere Tab",
+    "version": (0, 1, 1),
+    "location": "View3D (ObjectMode) > Sidebar > TMG > Atmosphere Tab",
     "warning": "",
     "category": "Object"
 }

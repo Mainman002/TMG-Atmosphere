@@ -151,7 +151,7 @@ class OBJECT_PT_TMG_Atmosphere_Parent_Panel(bpy.types.Panel):
 
 class ATMO_PT_TMG_Atmosphere_Panel(bpy.types.Panel):
     bl_idname = 'ATMO_PT_tmg_atmosphere_panel'
-    bl_label = 'Atmosphere'
+    bl_label = 'Operators'
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_parent_id = "OBJECT_PT_tmg_parent_panel"
