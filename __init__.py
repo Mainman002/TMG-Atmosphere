@@ -34,13 +34,14 @@ classes = (
     TMG_Atmosphere_Set_Scene_Settings,
     
     ## Atmosphere Panel
-    TMG_Atmosphere_Panel, 
-    TMG_Atmosphere_Panel_Properties,
-    TMG_Atmosphere_Panel_Properties_Objects,
-    TMG_Atmosphere_Panel_Properties_Effects_View_Settings,
-    TMG_Atmosphere_Panel_Properties_Effects_World,
-    TMG_Atmosphere_Panel_Properties_Atmosphere,
-    TMG_Atmosphere_Panel_Properties_Lights,
+    OBJECT_PT_TMG_Atmosphere_Parent_Panel, 
+    ATMO_PT_TMG_Atmosphere_Panel, 
+    ATMO_PT_TMG_Atmosphere_Panel_Properties,
+    ATMO_PT_TMG_Atmosphere_Panel_Properties_Objects,
+    ATMO_PT_TMG_Atmosphere_Panel_Properties_Effects_View_Settings,
+    ATMO_PT_TMG_Atmosphere_Panel_Properties_Effects_World,
+    ATMO_PT_TMG_Atmosphere_Panel_Properties_Atmosphere,
+    ATMO_PT_TMG_Atmosphere_Panel_Properties_Lights,
 )
 
 def register():

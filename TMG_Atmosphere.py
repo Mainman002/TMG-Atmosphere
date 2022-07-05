@@ -137,9 +137,9 @@ def link_shader_nodes(mat, node_a, node_b, output, input):
         mat.node_tree.links.new( mat.node_tree.nodes[node_a].outputs[output], mat.node_tree.nodes[node_b].inputs[input] ) 
 
 
-class TMG_Atmosphere_Panel(bpy.types.Panel):
-    bl_idname = 'tmg_atmosphere_panel'
-    bl_category = 'TMG Atmosphere'
+class OBJECT_PT_TMG_Atmosphere_Parent_Panel(bpy.types.Panel):
+    bl_idname = 'OBJECT_PT_tmg_parent_panel'
+    bl_category = 'TMG'
     bl_label = 'Atmosphere'
     bl_context = "objectmode"
     bl_space_type = 'VIEW_3D'
@@ -148,28 +148,40 @@ class TMG_Atmosphere_Panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
+
+class ATMO_PT_TMG_Atmosphere_Panel(bpy.types.Panel):
+    bl_idname = 'ATMO_PT_tmg_atmosphere_panel'
+    bl_label = 'Atmosphere'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "OBJECT_PT_tmg_parent_panel"
+    bl_options = {"DEFAULT_CLOSED"}
+
+    def draw(self, context):
+        layout = self.layout
+
         layout.operator("tmg_atmosphere.add", icon='SCENE_DATA')
         layout.operator("tmg_atmosphere.set_scene_settings", icon='SCENE')
 
             
-class TMG_Atmosphere_Panel_Properties(bpy.types.Panel):
-    bl_idname = 'tmg_atmosphere_panel_properties'
-    bl_category = 'TMG Atmosphere'
+class ATMO_PT_TMG_Atmosphere_Panel_Properties(bpy.types.Panel):
+    bl_idname = 'ATMO_PT_tmg_atmosphere_panel_properties'
     bl_label = 'Properties'
-    bl_context = "objectmode"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "OBJECT_PT_tmg_parent_panel"
+    bl_options = {"DEFAULT_CLOSED"}
         
     def draw(self, context):
         layout = self.layout
         
 
-class TMG_Atmosphere_Panel_Properties_Objects(bpy.types.Panel):
-    bl_idname = "tmg_atmosphere_panel_properties_objects"
+class ATMO_PT_TMG_Atmosphere_Panel_Properties_Objects(bpy.types.Panel):
+    bl_idname = "ATMO_PT_tmg_atmosphere_panel_properties_objects"
     bl_label = "Objects"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_parent_id = "ATMO_PT_tmg_atmosphere_panel_properties"
     bl_options = {"DEFAULT_CLOSED"}
         
     def draw(self, context):
@@ -190,12 +202,12 @@ class TMG_Atmosphere_Panel_Properties_Objects(bpy.types.Panel):
         col.prop(tmg_atmosphere_vars, 'suzanne')
 
 
-class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
-    bl_idname = "tmg_atmosphere_panel_properties_lights"
+class ATMO_PT_TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
+    bl_idname = "ATMO_PT_tmg_atmosphere_panel_properties_lights"
     bl_label = "Lights"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_parent_id = "ATMO_PT_tmg_atmosphere_panel_properties"
     bl_options = {"DEFAULT_CLOSED"}
         
     def draw(self, context):
@@ -206,47 +218,43 @@ class TMG_Atmosphere_Panel_Properties_Lights(bpy.types.Panel):
         layout.use_property_decorate = False  # No animation.
 
         layout.prop(tmg_atmosphere_vars, 'sun_enabled', text='Sun')
-        if scene.tmg_atmosphere_vars.sun_enabled:
-            box = layout.box()
-            col = box.column(align=True)
-            col.prop(tmg_atmosphere_vars, 'sun_color')
-            col.prop(tmg_atmosphere_vars, 'sun_energy', text='Energy')
-            col.enabled = tmg_atmosphere_vars.sun_enabled
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'sun_color')
+        col.prop(tmg_atmosphere_vars, 'sun_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.sun_enabled
 
         layout.prop(tmg_atmosphere_vars, 'area1_enabled', text='Area_1')
-        if scene.tmg_atmosphere_vars.area1_enabled:
-            box = layout.box()
-            col = box.column(align=True)
-            col.prop(tmg_atmosphere_vars, 'area1_type')
-            col.prop(tmg_atmosphere_vars, 'area1_color')
-            col.prop(tmg_atmosphere_vars, 'area1_energy', text='Energy')
-            col.enabled = tmg_atmosphere_vars.area1_enabled
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area1_type')
+        col.prop(tmg_atmosphere_vars, 'area1_color')
+        col.prop(tmg_atmosphere_vars, 'area1_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.area1_enabled
 
         layout.prop(tmg_atmosphere_vars, 'area2_enabled', text='Area_2')
-        if scene.tmg_atmosphere_vars.area2_enabled:
-            box = layout.box()
-            col = box.column(align=True)
-            col.prop(tmg_atmosphere_vars, 'area2_type')
-            col.prop(tmg_atmosphere_vars, 'area2_color')
-            col.prop(tmg_atmosphere_vars, 'area2_energy', text='Energy')
-            col.enabled = tmg_atmosphere_vars.area2_enabled
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area2_type')
+        col.prop(tmg_atmosphere_vars, 'area2_color')
+        col.prop(tmg_atmosphere_vars, 'area2_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.area2_enabled
 
         layout.prop(tmg_atmosphere_vars, 'area3_enabled', text='Area_3')
-        if scene.tmg_atmosphere_vars.area3_enabled:
-            box = layout.box()
-            col = box.column(align=True)
-            col.prop(tmg_atmosphere_vars, 'area3_type')
-            col.prop(tmg_atmosphere_vars, 'area3_color')
-            col.prop(tmg_atmosphere_vars, 'area3_energy', text='Energy')
-            col.enabled = tmg_atmosphere_vars.area3_enabled
+        box = layout.box()
+        col = box.column(align=True)
+        col.prop(tmg_atmosphere_vars, 'area3_type')
+        col.prop(tmg_atmosphere_vars, 'area3_color')
+        col.prop(tmg_atmosphere_vars, 'area3_energy', text='Energy')
+        col.enabled = tmg_atmosphere_vars.area3_enabled
 
 
-class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
-    bl_idname = "tmg_atmosphere_panel_properties_atmosphere"
+class ATMO_PT_TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
+    bl_idname = "ATMO_PT_tmg_atmosphere_panel_properties_atmosphere"
     bl_label = "Atmosphere"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_parent_id = "ATMO_PT_tmg_atmosphere_panel_properties"
     bl_options = {"DEFAULT_CLOSED"}
         
     def draw(self, context):
@@ -257,21 +265,20 @@ class TMG_Atmosphere_Panel_Properties_Atmosphere(bpy.types.Panel):
         layout.use_property_decorate = False  # No animation.
 
         layout.prop(tmg_atmosphere_vars, 'atmosphere_enabled', text='Atmosphere')
-        if scene.tmg_atmosphere_vars.atmosphere_enabled:
-            box = layout.box()
-            col = box.column(align=False)
-            col.prop(tmg_atmosphere_vars, 'atmosphere_color')
-            col.prop(tmg_atmosphere_vars, 'atmosphere_density')
-            col.prop(tmg_atmosphere_vars, 'atmosphere_absorption')
-            col.enabled = tmg_atmosphere_vars.atmosphere_enabled
+        box = layout.box()
+        col = box.column(align=False)
+        col.prop(tmg_atmosphere_vars, 'atmosphere_color')
+        col.prop(tmg_atmosphere_vars, 'atmosphere_density')
+        col.prop(tmg_atmosphere_vars, 'atmosphere_absorption')
+        col.enabled = tmg_atmosphere_vars.atmosphere_enabled
 
 
-class TMG_Atmosphere_Panel_Properties_Effects_View_Settings(bpy.types.Panel):
-    bl_idname = "tmg_atmosphere_panel_properties_effects_view_settings"
+class ATMO_PT_TMG_Atmosphere_Panel_Properties_Effects_View_Settings(bpy.types.Panel):
+    bl_idname = "ATMO_PT_tmg_atmosphere_panel_properties_effects_view_settings"
     bl_label = "View Settings"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_parent_id = "ATMO_PT_tmg_atmosphere_panel_properties"
     bl_options = {"DEFAULT_CLOSED"}
         
     def draw(self, context):
@@ -287,12 +294,12 @@ class TMG_Atmosphere_Panel_Properties_Effects_View_Settings(bpy.types.Panel):
         col.prop(scene.view_settings, 'look')
 
 
-class TMG_Atmosphere_Panel_Properties_Effects_World(bpy.types.Panel):
-    bl_idname = "tmg_atmosphere_panel_properties_effects_world"
+class ATMO_PT_TMG_Atmosphere_Panel_Properties_Effects_World(bpy.types.Panel):
+    bl_idname = "ATMO_PT_tmg_atmosphere_panel_properties_effects_world"
     bl_label = "World"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_parent_id = "tmg_atmosphere_panel_properties"
+    bl_parent_id = "ATMO_PT_tmg_atmosphere_panel_properties"
     bl_options = {"DEFAULT_CLOSED"}
         
     def draw(self, context):
